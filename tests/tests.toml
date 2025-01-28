@@ -469,6 +469,7 @@ asr = true
 filename = "errors/dnint_args.f90"
 asr = true
 
+
 [[test]]
 filename = "warnings/dim_assgn_test.f90"
 asr = true

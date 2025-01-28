@@ -124,4 +124,9 @@ program continue_compilation_1
     if (q1) q1 = 1
     if (r1) r1 = 1.0
     if (c1) c1 = 'a'
+
+   implicit none
+   print *, "hello"
+   exit
+   print *, "world"
 end program

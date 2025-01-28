@@ -6220,6 +6220,10 @@ public:
     }
 
     void visit_Exit(const ASR::Exit_t &x) {
+        if (loop_or_block_end.empty()) {
+            throw CodeGenError("Error: 'exit' statement used outside of any loop or block.",
+                               x.base.base.loc);
+        }
         if (x.m_stmt_name) {
             std::string stmt_name = std::string(x.m_stmt_name) + ".end";
             int nested_block_depth = loop_or_block_end_names.size();

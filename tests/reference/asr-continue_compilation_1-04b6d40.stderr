@@ -4,6 +4,12 @@ syntax error: Token 'print' is unexpected here
 75 |     print*, nint(1e12_8)
    |     ^^^^^ 
 
+syntax error: Token 'none' is unexpected here
+   --> tests/errors/continue_compilation_1.f90:128:13
+    |
+128 |    implicit none
+    |             ^^^^ 
+
 semantic error: Implicit typing is not allowed, enable it by using --implicit-typing 
  --> tests/errors/continue_compilation_1.f90:2:5 - 3:1
   |
