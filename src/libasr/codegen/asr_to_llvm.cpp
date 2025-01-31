@@ -971,6 +971,7 @@ public:
         std::vector<std::string> build_order
             = determine_module_dependencies(x);
         for (auto &item : build_order) {
+            if (!item.compare("_lcompilers_mlir_gpu_offloading")) continue;
             LCOMPILERS_ASSERT(x.m_symtab->get_symbol(item)
                 != nullptr);
             ASR::symbol_t *mod = x.m_symtab->get_symbol(item);
@@ -8904,7 +8905,11 @@ public:
                     ASR::Variable_t *arg = EXPR2VAR(x.m_args[i].m_value);
                     uint32_t h = get_hash((ASR::asr_t*)arg);
                     if (llvm_symtab.find(h) != llvm_symtab.end()) {
-                        tmp = llvm_symtab[h];
+                        if (llvm_symtab_deep_copy.find(h) != llvm_symtab_deep_copy.end()) {
+                            tmp = llvm_symtab_deep_copy[h];
+                        } else {
+                            tmp = llvm_symtab[h];
+                        }
                         if( !ASRUtils::is_array(arg->m_type) ) {
 
                             if (x_abi == ASR::abiType::Source && ASR::is_a<ASR::CPtr_t>(*arg->m_type)) {
@@ -9519,6 +9524,13 @@ public:
                 } else {
                     pass_arg = dt_polymorphic;
                 }
+            } else if (ASR::is_a<ASR::ArrayItem_t>(*x.m_dt)){
+                this->visit_expr(*x.m_dt);
+                llvm::Value* dt = tmp;
+                llvm::Value* dt_polymorphic = tmp;
+                dt_polymorphic = convert_to_polymorphic_arg(dt, ASRUtils::expr_type(s->m_args[0]),
+                                                ASRUtils::expr_type(x.m_dt));
+                args.push_back(dt_polymorphic);
             } else {
                 throw CodeGenError("SubroutineCall: StructType symbol type not supported");
             }
@@ -10054,6 +10066,13 @@ public:
                 } else {
                     pass_arg = dt_polymorphic;
                 }
+            } else if(ASR::is_a<ASR::ArrayItem_t>(*x.m_dt)) {
+                this->visit_expr(*x.m_dt);
+                llvm::Value* dt = tmp;
+                llvm::Value* dt_polymorphic = tmp;
+                dt_polymorphic = convert_to_polymorphic_arg(dt, ASRUtils::expr_type(s->m_args[0]),
+                                                ASRUtils::expr_type(x.m_dt));
+                args.push_back(dt_polymorphic);
             } else {
                 throw CodeGenError("FunctionCall: StructType symbol type not supported");
             }

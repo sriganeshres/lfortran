@@ -128,7 +128,7 @@ program continue_compilation_1
     print *, "hello"
     exit
     print *, "world"
-    
+
     mask4 = reshape([.true., .false., .true., .true., .false., .true.], [3, 2])
     mask5 = reshape([.true., .false., .true., .true., .false., .true.], [2, 3, 1])
 
