@@ -292,3 +292,9 @@ semantic error: string expression, expected logical
     |
 126 |     if (c1) c1 = 'a'
     |         ^^ 
+
+semantic error: EXIT statement outside of loop
+   --> tests/errors/continue_compilation_1.f90:130:4
+    |
+130 |    exit
+    |    ^^^^ 
