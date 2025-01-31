@@ -28,6 +28,7 @@ public:
     size_t starting_n_body = 0;
     int loop_nesting = 0;
     int all_loop = 0;
+    int all_block = 0;
     int pragma_nesting_level = 0;
     bool openmp_collapse = false;
     int collapse_value=0;
@@ -65,6 +66,7 @@ public:
     }
 
     void visit_Block(const AST::Block_t &x) {
+        all_block++;
         from_block = true;
         SymbolTable *parent_scope = current_scope;
         current_scope = al.make_new<SymbolTable>(parent_scope);
@@ -101,6 +103,7 @@ public:
         tmp = ASR::make_BlockCall_t(al, x.base.base.loc,  -1,
                                     ASR::down_cast<ASR::symbol_t>(block));
         from_block = false;
+        all_block--;
     }
 
     // Transforms statements to a list of ASR statements
@@ -1217,6 +1220,7 @@ public:
     }
 
     void visit_AssociateBlock(const AST::AssociateBlock_t& x) {
+        all_block++;
         SymbolTable* new_scope = al.make_new<SymbolTable>(current_scope);
         std::string name = current_scope->get_unique_name("associate_block");
         ASR::asr_t* associate_block = ASR::make_AssociateBlock_t(al, x.base.base.loc,
@@ -1287,6 +1291,7 @@ public:
         associate_block_t->n_body = body.size();
         current_scope->add_symbol(name, ASR::down_cast<ASR::symbol_t>(associate_block));
         tmp = ASR::make_AssociateBlockCall_t(al, x.base.base.loc, ASR::down_cast<ASR::symbol_t>(associate_block));
+        all_block--;
     }
 
     void visit_Allocate(const AST::Allocate_t& x) {
@@ -1614,6 +1619,7 @@ public:
     }
 
     void visit_Select(const AST::Select_t& x) {
+        all_block++;
         this->visit_expr(*(x.m_test));
         ASR::expr_t* a_test = ASRUtils::EXPR(tmp);
         Vec<ASR::case_stmt_t*> a_body_vec;
@@ -1652,9 +1658,11 @@ public:
 
         tmp = ASR::make_Select_t(al, x.base.base.loc, a_test, a_body_vec.p,
                            a_body_vec.size(), def_body.p, def_body.size(), false);
+        all_block--;
     }
 
     void visit_SelectType(const AST::SelectType_t& x) {
+        all_block++;
         // TODO: We might need to re-order all ASR::TypeStmtName
         // before ASR::ClassStmt as per GFortran's semantics
         if( !x.m_selector ) {
@@ -1880,6 +1888,7 @@ public:
         tmp = ASR::make_SelectType_t(al, x.base.base.loc, m_selector,
                                      select_type_body.p, select_type_body.size(),
                                      select_type_default.p, select_type_default.size());
+        all_block--;
     }
 
     template <typename T>
@@ -1931,11 +1940,15 @@ public:
     }
 
     void visit_Submodule(const AST::Submodule_t &x) {
+        all_block++;
         visit_SubmoduleModuleCommon(x);
+        all_block--;
     }
 
     void visit_Module(const AST::Module_t &x) {
+        all_block++;
         visit_SubmoduleModuleCommon(x);
+        all_block--;
     }
 
     void visit_Use(const AST::Use_t& /* x */) {
@@ -1958,6 +1971,7 @@ public:
 
 
     void visit_Program(const AST::Program_t &x) {
+        all_block++;
         SymbolTable *old_scope = current_scope;
         ASR::symbol_t *t = current_scope->get_symbol(to_lower(x.m_name));
         ASR::Program_t *v = ASR::down_cast<ASR::Program_t>(t);
@@ -1997,6 +2011,7 @@ public:
         remove_common_variable_declarations(current_scope);
         current_scope = old_scope;
         tmp = nullptr;
+        all_block--;
     }
 
     ASR::stmt_t* create_implicit_deallocate_subrout_call(ASR::stmt_t* x) {
@@ -2352,6 +2367,7 @@ public:
     // TODO: add SymbolTable::lookup_symbol(), which will automatically return
     // an error
     // TODO: add SymbolTable::get_symbol(), which will only check in Debug mode
+        all_block++;
         SymbolTable *old_scope = current_scope;
         ASR::symbol_t *t = current_scope->get_symbol(to_lower(x.m_name));
         starting_m_body = x.m_body;
@@ -2430,9 +2446,11 @@ public:
         remove_common_variable_declarations(current_scope);
         current_scope = old_scope;
         tmp = nullptr;
+        all_block--;
     }
 
     void visit_Function(const AST::Function_t &x) {
+        all_block++;
         starting_m_body = x.m_body;
         starting_n_body = x.n_body;
         SymbolTable *old_scope = current_scope;
@@ -2510,6 +2528,7 @@ public:
         remove_common_variable_declarations(current_scope);
         current_scope = old_scope;
         tmp = nullptr;
+        all_block--;
     }
 
     void visit_Assign(const AST::Assign_t &x) {
@@ -3882,6 +3901,7 @@ public:
     }
 
     void visit_If(const AST::If_t &x) {
+        all_block++;
         visit_expr(*x.m_test);
         ASR::expr_t *test = ASRUtils::EXPR(tmp);
         ASR::ttype_t *test_type = ASRUtils::expr_type(test);
@@ -3900,9 +3920,11 @@ public:
         transform_stmts(orelse, x.n_orelse, x.m_orelse);
         tmp = ASR::make_If_t(al, x.base.base.loc, test, body.p,
                 body.size(), orelse.p, orelse.size());
+        all_block--;
     }
 
     void visit_IfArithmetic(const AST::IfArithmetic_t &x) {
+        all_block++;
         visit_expr(*x.m_test);
         ASR::expr_t *test_int = ASRUtils::EXPR(tmp);
         ASR::ttype_t *test_int_type = ASRUtils::expr_type(test_int);
@@ -3966,9 +3988,11 @@ public:
                 body_gt.size(), orelse_gt.p, orelse_gt.size())));
         tmp = ASR::make_If_t(al, x.base.base.loc, test_lt, body.p,
                 body.size(), orelse.p, orelse.size());
+        all_block--;
     }
 
     void visit_Where(const AST::Where_t &x) {
+        all_block++;
         visit_expr(*x.m_test);
         ASR::expr_t *test = ASRUtils::EXPR(tmp);
         Vec<ASR::stmt_t*> body;
@@ -4009,6 +4033,7 @@ public:
             throw SemanticAbort();
         }
         tmp = ASR::make_Where_t(al, x.base.base.loc, test, body.p, body.size(), orelse.p, orelse.size());
+        all_block--;
     }
 
     void visit_WhileLoop(const AST::WhileLoop_t &x) {
@@ -4336,9 +4361,9 @@ public:
     }
 
     void visit_Exit(const AST::Exit_t &x) {
-        if (all_loop == 0) {
+        if (all_loop == 0 || all_block == 0) {
             diag.add(Diagnostic(
-                "EXIT statement outside of loop",
+                "EXIT statement outside of loop or block",
                 Level::Error, Stage::Semantic, {
                     Label("",{x.base.base.loc})
                 }));

@@ -3,7 +3,7 @@ program continue_compilation_1
 
     integer :: a(3), b(3), b1(3, 3), a3(3, 3, 3), b4(3, 3, 3, 3), a5, c5, i, arr1(3), arr2(2, 3), arr3(2, 1, 3)
     character :: a1(3, 3)
-    logical :: a2(3, 3), mask1(3), mask2(2, 3), mask3(2, 1, 3)
+    logical :: a2(3, 3), mask1(3), mask2(2, 3), mask3(2, 1, 3), mask4(3, 2), mask5(2, 3, 1)
     integer(kind=8) :: b5
     real(8) :: y1
     real :: z1
@@ -125,8 +125,28 @@ program continue_compilation_1
     if (r1) r1 = 1.0
     if (c1) c1 = 'a'
 
-   implicit none
-   print *, "hello"
-   exit
-   print *, "world"
+    print *, "hello"
+    exit
+    print *, "world"
+    
+    mask4 = reshape([.true., .false., .true., .true., .false., .true.], [3, 2])
+    mask5 = reshape([.true., .false., .true., .true., .false., .true.], [2, 3, 1])
+
+    print *, sum(arr1, mask2)
+    print *, sum(arr2, mask3, 2)
+    print *, iparity(arr2, mask4)
+    print *, iparity(arr3, mask5, 3)
+
+    ! argument_not_a_variable
+    print *, present(a + 1)
+
+    ! argument_not_optional
+    print *, present(a)
+
+    print *, pack([1, 2, 3], [.true., .true., .true., .true.])
+
+    print *, reshape("hello", [2, 3])
+    print *, reshape(.true., [2, 3])
+    print *, reshape([1, 2, 3, 4], "hello")
+    print *, reshape([1, 2, 3, 4], .false.)
 end program

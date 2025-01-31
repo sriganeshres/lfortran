@@ -1,300 +1,54 @@
-syntax error: Token 'print' is unexpected here
-  --> tests/errors/continue_compilation_1.f90:75:5
-   |
-75 |     print*, nint(1e12_8)
-   |     ^^^^^ 
-
-syntax error: Token 'none' is unexpected here
-   --> tests/errors/continue_compilation_1.f90:128:13
-    |
-128 |    implicit none
-    |             ^^^^ 
-
-semantic error: Implicit typing is not allowed, enable it by using --implicit-typing 
- --> tests/errors/continue_compilation_1.f90:2:5 - 3:1
-  |
-2 |        implicit integer(a-f), real(e-z)
-  |        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^...
-...
-  |
-3 |    
-  | ...^ 
-
-semantic error: arguments of `repeat` intrinsic must be scalar
-  --> tests/errors/continue_compilation_1.f90:86:38
-   |
-86 |     character(3), parameter :: ar1 = repeat(["abc", "#^1", "123"], [1, 2, 3])
-   |                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ 
-
-semantic error: Assignment to loop variable `i` is not allowed
-  --> tests/errors/continue_compilation_1.f90:20:8
-   |
-20 |        i = i + 1
-   |        ^ 
-
-semantic error:  first argument of `maskl` must be less than or equal to the BIT_SIZE of INTEGER(KIND=4)
-  --> tests/errors/continue_compilation_1.f90:24:13
-   |
-24 |     print*, maskl(63)
-   |             ^^^^^^^^^ 
-
-semantic error: first argument of `maskr` must be less than or equal to the BIT_SIZE of INTEGER(KIND=4)
-  --> tests/errors/continue_compilation_1.f90:26:13
-   |
-26 |     print*, maskr(63)
-   |             ^^^^^^^^^ 
-
-semantic error: first argument of `maskl` must be nonnegative
-  --> tests/errors/continue_compilation_1.f90:28:13
-   |
-28 |     print*, maskl(-24)
-   |             ^^^^^^^^^^ 
-
-semantic error: first argument of `maskr` must be nonnegative
-  --> tests/errors/continue_compilation_1.f90:30:13
-   |
-30 |     print*, maskr(-24)
-   |             ^^^^^^^^^^ 
-
-semantic error: The argument `matrix_a` in `matmul` must be of type Integer, Real, Complex or Logical
-  --> tests/errors/continue_compilation_1.f90:32:21
-   |
-32 |     print *, matmul(a1, b1)
-   |                     ^^ 
-
-semantic error: The argument `matrix_b` in `matmul` must be of type Integer, Real or Complex if first matrix is of numeric type
-  --> tests/errors/continue_compilation_1.f90:34:25
-   |
-34 |     print *, matmul(b1, a1)
-   |                         ^^ 
-
-semantic error: The `matmul` intrinsic doesn't handle logical type yet
-  --> tests/errors/continue_compilation_1.f90:36:14
-   |
-36 |     print *, matmul(a2, b1)
-   |              ^^^^^^^^^^^^^^ 
-
-semantic error: `matmul` accepts arrays of rank 1 or 2 only, provided an array with rank, 3
-  --> tests/errors/continue_compilation_1.f90:38:21
-   |
-38 |     print *, matmul(a3, b1)
-   |                     ^^ 
-
-semantic error: `matmul` accepts arrays of rank 1 or 2 only, provided an array with rank, 4
-  --> tests/errors/continue_compilation_1.f90:40:25
-   |
-40 |     print *, matmul(b1, b4)
-   |                         ^^ 
-
-semantic error: The argument `matrix_b` in `matmul` must be of rank 2, provided an array with rank, 1
-  --> tests/errors/continue_compilation_1.f90:42:24
-   |
-42 |     print *, matmul(a, b)
-   |                        ^ 
-
-semantic error: `transpose` accepts arrays of rank 2 only, provided an array with rank, 1
-  --> tests/errors/continue_compilation_1.f90:44:24
-   |
-44 |     print *, transpose(a)
-   |                        ^ 
-
-semantic error: Kind of all the arguments of Mergebits must be the same
-  --> tests/errors/continue_compilation_1.f90:46:14
-   |
-46 |     print *, merge_bits(8, 12_8, 2)
-   |              ^^^^^^^^^^^^^^^^^^^^^^ 
-
-semantic error: Kind of all the arguments of Mergebits must be the same
-  --> tests/errors/continue_compilation_1.f90:48:14
-   |
-48 |     print *, merge_bits(a5, b5, c5)
-   |              ^^^^^^^^^^^^^^^^^^^^^^ 
-
-semantic error: Second argument of modulo cannot be 0
-  --> tests/errors/continue_compilation_1.f90:64:14
-   |
-64 |     print *, modulo(1, 0)
-   |              ^^^^^^^^^^^^ 
-
-semantic error: Function 'my_func' not found (not user defined nor intrinsic)
-  --> tests/errors/continue_compilation_1.f90:66:5
-   |
-66 |     call my_func(y=1, x=2, z=1)
-   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^ 
-
-semantic error: Result of `nint` overflows its kind(4)
-  --> tests/errors/continue_compilation_1.f90:76:13
-   |
-76 |     print*, nint(1000000000000.0000000000000000d0)
-   |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ 
-
-semantic error: Invalid argument `hello` supplied
-  --> tests/errors/continue_compilation_1.f90:78:5
-   |
-78 |     OPEN(file="numbers", hello="world")
-   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ 
-
-semantic error: Cannot assign to a constant variable
-  --> tests/errors/continue_compilation_1.f90:80:5
-   |
-80 |     i1 = 3
-   |     ^^^^^^ assignment here
-   |
-10 |     integer, parameter :: i1 = 2
-   |                           ~~~~~~ declared as constant
-
-semantic error: Expected 0 or 1 arguments, got 2 arguments instead.
-  --> tests/errors/continue_compilation_1.f90:82:5
-   |
-82 |     call FLUSH(1, 2)
-   |     ^^^^^^^^^^^^^^^^ 
-
-semantic error: `kind` argument of `verify` intrinsic must be a scalar
-  --> tests/errors/continue_compilation_1.f90:84:39
-   |
-84 |     print*, verify(string, set, kind= [4, 4] )
-   |                                       ^^^^^^ 
-
-semantic error: arguments of `and` intrinsic must be scalar
-  --> tests/errors/continue_compilation_1.f90:85:14
-   |
-85 |     print *, and([1, 2, 3], [1, 2, 3])
-   |              ^^^^^^^^^^^^^^^^^^^^^^^^^ 
-
-semantic error: The shift argument of 'dshiftl' intrinsic must be less than or equal to the bit size of the integer
-  --> tests/errors/continue_compilation_1.f90:88:28
-   |
-88 |     print *, dshiftl(1, 2, 34)
-   |                            ^^ 
-
-semantic error: The shift argument of 'dshiftl' intrinsic must be non-negative integer
-  --> tests/errors/continue_compilation_1.f90:89:28
-   |
-89 |     print *, dshiftl(1, 2, -2)
-   |                            ^^ 
-
-semantic error: The shift argument of 'dshiftr' intrinsic must be less than or equal to the bit size of the integer
-  --> tests/errors/continue_compilation_1.f90:91:28
-   |
-91 |     print *, dshiftr(1, 2, 34)
-   |                            ^^ 
-
-semantic error: The shift argument of 'dshiftr' intrinsic must be non-negative integer
-  --> tests/errors/continue_compilation_1.f90:92:28
-   |
-92 |     print *, dshiftr(1, 2, -2)
-   |                            ^^ 
-
-semantic error: arguments of `selected_int_kind` intrinsic must be scalar
-  --> tests/errors/continue_compilation_1.f90:94:14
-   |
-94 |     print *, selected_int_kind([1,2,3])
-   |              ^^^^^^^^^^^^^^^^^^^^^^^^^^ 
-
-semantic error: arguments of `selected_real_kind` intrinsic must be scalar
-  --> tests/errors/continue_compilation_1.f90:95:14
-   |
-95 |     print *, selected_real_kind([1,2,3])
-   |              ^^^^^^^^^^^^^^^^^^^^^^^^^^^ 
-
-semantic error: arguments of `selected_char_kind` intrinsic must be scalar
-  --> tests/errors/continue_compilation_1.f90:96:14
-   |
-96 |     print *, selected_char_kind(['c', 'a', 'b'])
-   |              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ 
-
-semantic error: `dim` argument of the `Sum` intrinsic is out of bounds
-   --> tests/errors/continue_compilation_1.f90:105:30
-    |
-105 |     print *, sum(arr1, dim = 2)
-    |                              ^ Must have 0 < dim <= 1 for array of rank 1
-
-semantic error: `dim` argument of the `Sum` intrinsic is out of bounds
-   --> tests/errors/continue_compilation_1.f90:106:30
-    |
-106 |     print *, sum(arr1, dim = -1)
-    |                              ^^ Must have 0 < dim <= 1 for array of rank 1
-
-semantic error: `dim` argument of the `Sum` intrinsic is out of bounds
-   --> tests/errors/continue_compilation_1.f90:107:44
-    |
-107 |     print *, sum(arr1, mask = mask1, dim = 2)
-    |                                            ^ Must have 0 < dim <= 1 for array of rank 1
-
-semantic error: `dim` argument of the `Sum` intrinsic is out of bounds
-   --> tests/errors/continue_compilation_1.f90:108:44
-    |
-108 |     print *, sum(arr1, mask = mask1, dim = -1)
-    |                                            ^^ Must have 0 < dim <= 1 for array of rank 1
-
-semantic error: `dim` argument of the `Product` intrinsic is out of bounds
-   --> tests/errors/continue_compilation_1.f90:110:34
-    |
-110 |     print *, product(arr2, dim = 3)
-    |                                  ^ Must have 0 < dim <= 2 for array of rank 2
-
-semantic error: `dim` argument of the `Product` intrinsic is out of bounds
-   --> tests/errors/continue_compilation_1.f90:111:34
-    |
-111 |     print *, product(arr2, dim = -1)
-    |                                  ^^ Must have 0 < dim <= 2 for array of rank 2
-
-semantic error: `dim` argument of the `Product` intrinsic is out of bounds
-   --> tests/errors/continue_compilation_1.f90:112:48
-    |
-112 |     print *, product(arr2, mask = mask2, dim = 3)
-    |                                                ^ Must have 0 < dim <= 2 for array of rank 2
-
-semantic error: `dim` argument of the `Product` intrinsic is out of bounds
-   --> tests/errors/continue_compilation_1.f90:113:48
-    |
-113 |     print *, product(arr2, mask = mask2, dim = -1)
-    |                                                ^^ Must have 0 < dim <= 2 for array of rank 2
-
-semantic error: `dim` argument of the `Iparity` intrinsic is out of bounds
-   --> tests/errors/continue_compilation_1.f90:115:34
-    |
-115 |     print *, iparity(arr3, dim = 4)
-    |                                  ^ Must have 0 < dim <= 3 for array of rank 3
-
-semantic error: `dim` argument of the `Iparity` intrinsic is out of bounds
-   --> tests/errors/continue_compilation_1.f90:116:34
-    |
-116 |     print *, iparity(arr3, dim = -1)
-    |                                  ^^ Must have 0 < dim <= 3 for array of rank 3
-
-semantic error: `dim` argument of the `Iparity` intrinsic is out of bounds
-   --> tests/errors/continue_compilation_1.f90:117:48
-    |
-117 |     print *, iparity(arr3, mask = mask3, dim = 4)
-    |                                                ^ Must have 0 < dim <= 3 for array of rank 3
-
-semantic error: `dim` argument of the `Iparity` intrinsic is out of bounds
-   --> tests/errors/continue_compilation_1.f90:118:48
-    |
-118 |     print *, iparity(arr3, mask = mask3, dim = -1)
-    |                                                ^^ Must have 0 < dim <= 3 for array of rank 3
-
-semantic error: integer expression, expected logical
-   --> tests/errors/continue_compilation_1.f90:124:9
-    |
-124 |     if (q1) q1 = 1
-    |         ^^ 
-
-semantic error: real expression, expected logical
-   --> tests/errors/continue_compilation_1.f90:125:9
-    |
-125 |     if (r1) r1 = 1.0
-    |         ^^ 
-
-semantic error: string expression, expected logical
-   --> tests/errors/continue_compilation_1.f90:126:9
-    |
-126 |     if (c1) c1 = 'a'
-    |         ^^ 
-
-semantic error: EXIT statement outside of loop
-   --> tests/errors/continue_compilation_1.f90:130:4
-    |
-130 |    exit
-    |    ^^^^ 
+Internal Compiler Error: Unhandled exception
+Traceback (most recent call last):
+[2m  Binary file "[0m[1m[35m$DIR/src/bin/lfortran[39m[0m[2m", in _start[0m
+[2m  File "[0m[1m[35m./csu/../csu/libc-start.c[39m[0m[2m", line 360, in __libc_start_main[0m
+[2m  File "[0m[1m[35m./csu/../sysdeps/nptl/libc_start_call_main.h[39m[0m[2m", line 58, in __libc_start_call_main[0m
+[2m  File "[0m[1m[35m$DIR/src/bin/lfortran.cpp[39m[0m[2m", line 2741, in main[0m
+    return main_app(argc, argv);
+[2m  File "[0m[1m[35m$DIR/src/bin/lfortran.cpp[39m[0m[2m", line 2560, in main_app(int, char**)[0m
+    return run_parser_and_semantics(arg_file, compiler_options);
+[2m  File "[0m[1m[35m$DIR/src/bin/lfortran.cpp[39m[0m[2m", line 630, in (anonymous namespace)::run_parser_and_semantics(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, LCompilers::CompilerOptions&)[0m
+    r = fe.get_asr2(input, lm, diagnostics);
+[2m  File "[0m[1m[35m$DIR/src/lfortran/fortran_evaluator.cpp[39m[0m[2m", line 275, in LCompilers::FortranEvaluator::get_asr2(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, LCompilers::LocationManager&, LCompilers::diag::Diagnostics&)[0m
+    Result<ASR::TranslationUnit_t*> res2 = get_asr3(*ast, diagnostics, lm);
+[2m  File "[0m[1m[35m$DIR/src/lfortran/fortran_evaluator.cpp[39m[0m[2m", line 297, in LCompilers::FortranEvaluator::get_asr3(LCompilers::LFortran::AST::TranslationUnit_t&, LCompilers::diag::Diagnostics&, LCompilers::LocationManager&)[0m
+    compiler_options.symtab_only, compiler_options, lm);
+[2m  File "[0m[1m[35m$DIR/src/lfortran/semantics/ast_to_asr.cpp[39m[0m[2m", line 111, in LCompilers::LFortran::ast_to_asr(Allocator&, LCompilers::LFortran::AST::TranslationUnit_t&, LCompilers::diag::Diagnostics&, LCompilers::SymbolTable*, bool, LCompilers::CompilerOptions&, LCompilers::LocationManager&)[0m
+    );
+[2m  File "[0m[1m[35m$DIR/src/lfortran/semantics/ast_body_visitor.cpp[39m[0m[2m", line 4767, in LCompilers::LFortran::body_visitor(Allocator&, LCompilers::LFortran::AST::TranslationUnit_t&, LCompilers::diag::Diagnostics&, LCompilers::ASR::asr_t*, LCompilers::CompilerOptions&, std::map<unsigned long, std::map<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, LCompilers::ASR::ttype_t*, std::less<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::allocator<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, LCompilers::ASR::ttype_t*> > >, std::less<unsigned long>, std::allocator<std::pair<unsigned long const, std::map<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, LCompilers::ASR::ttype_t*, std::less<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::allocator<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, LCompilers::ASR::ttype_t*> > > > > >&, std::map<unsigned long, LCompilers::ASR::symbol_t*, std::less<unsigned long>, std::allocator<std::pair<unsigned long const, LCompilers::ASR::symbol_t*> > >&, std::map<unsigned long, std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::less<unsigned long>, std::allocator<std::pair<unsigned long const, std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > > > >&, std::map<unsigned long, std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::less<unsigned long>, std::allocator<std::pair<unsigned long const, std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > > > >&, std::map<unsigned int, std::map<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, LCompilers::ASR::ttype_t*, std::less<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::allocator<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, LCompilers::ASR::ttype_t*> > >, std::less<unsigned int>, std::allocator<std::pair<unsigned int const, std::map<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, LCompilers::ASR::ttype_t*, std::less<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::allocator<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, LCompilers::ASR::ttype_t*> > > > > >&, std::map<unsigned int, std::map<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, LCompilers::ASR::symbol_t*, std::less<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::allocator<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, LCompilers::ASR::symbol_t*> > >, std::less<unsigned int>, std::allocator<std::pair<unsigned int const, std::map<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, LCompilers::ASR::symbol_t*, std::less<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::allocator<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, LCompilers::ASR::symbol_t*> > > > > >&, std::map<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::map<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::vector<LCompilers::LFortran::AST::stmt_t*, std::allocator<LCompilers::LFortran::AST::stmt_t*> >, std::less<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::allocator<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, std::vector<LCompilers::LFortran::AST::stmt_t*, std::allocator<LCompilers::LFortran::AST::stmt_t*> > > > >, std::less<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::allocator<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, std::map<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::vector<LCompilers::LFortran::AST::stmt_t*, std::allocator<LCompilers::LFortran::AST::stmt_t*> >, std::less<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::allocator<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, std::vector<LCompilers::LFortran::AST::stmt_t*, std::allocator<LCompilers::LFortran::AST::stmt_t*> > > > > > > >&, std::map<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::vector<int, std::allocator<int> >, std::less<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::allocator<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, std::vector<int, std::allocator<int> > > > >&, std::vector<LCompilers::ASR::stmt_t*, std::allocator<LCompilers::ASR::stmt_t*> >&, LCompilers::LocationManager&)[0m
+    b.visit_TranslationUnit(ast);
+[2m  File "[0m[1m[35m$DIR/src/lfortran/semantics/ast_body_visitor.cpp[39m[0m[2m", line 167, in LCompilers::LFortran::BodyVisitor::visit_TranslationUnit(LCompilers::LFortran::AST::TranslationUnit_t const&)[0m
+    visit_ast(*x.m_items[i]);
+[2m  File "[0m[1m[35m$DIR/src/lfortran/ast.h[39m[0m[2m", line 4943, in LCompilers::LFortran::AST::BaseVisitor<LCompilers::LFortran::BodyVisitor>::visit_ast(LCompilers::LFortran::AST::ast_t const&)[0m
+    void visit_ast(const ast_t &b) { visit_ast_t(b, self()); }
+[2m  File "[0m[1m[35m$DIR/src/lfortran/ast.h[39m[0m[2m", line 4899, in void LCompilers::LFortran::AST::visit_ast_t<LCompilers::LFortran::BodyVisitor>(LCompilers::LFortran::AST::ast_t const&, LCompilers::LFortran::BodyVisitor&)[0m
+    case astType::mod: { v.visit_mod((const mod_t &)x); return; }
+[2m  File "[0m[1m[35m$DIR/src/lfortran/ast.h[39m[0m[2m", line 4946, in LCompilers::LFortran::AST::BaseVisitor<LCompilers::LFortran::BodyVisitor>::visit_mod(LCompilers::LFortran::AST::mod_t const&)[0m
+    void visit_mod(const mod_t &b) { visit_mod_t(b, self()); }
+[2m  File "[0m[1m[35m$DIR/src/lfortran/ast.h[39m[0m[2m", line 4524, in void LCompilers::LFortran::AST::visit_mod_t<LCompilers::LFortran::BodyVisitor>(LCompilers::LFortran::AST::mod_t const&, LCompilers::LFortran::BodyVisitor&)[0m
+    case modType::Program: { v.visit_Program((const Program_t &)x); return; }
+[2m  File "[0m[1m[35m$DIR/src/lfortran/semantics/ast_body_visitor.cpp[39m[0m[2m", line 1995, in LCompilers::LFortran::BodyVisitor::visit_Program(LCompilers::LFortran::AST::Program_t const&)[0m
+    transform_stmts(body, x.n_body, x.m_body);
+[2m  File "[0m[1m[35m$DIR/src/lfortran/semantics/ast_body_visitor.cpp[39m[0m[2m", line 129, in LCompilers::LFortran::BodyVisitor::transform_stmts(LCompilers::Vec<LCompilers::ASR::stmt_t*>&, unsigned long, LCompilers::LFortran::AST::stmt_t**)[0m
+    this->visit_stmt(*m_body[i]);
+[2m  File "[0m[1m[35m$DIR/src/lfortran/ast.h[39m[0m[2m", line 4991, in LCompilers::LFortran::AST::BaseVisitor<LCompilers::LFortran::BodyVisitor>::visit_stmt(LCompilers::LFortran::AST::stmt_t const&)[0m
+    void visit_stmt(const stmt_t &b) { visit_stmt_t(b, self()); }
+[2m  File "[0m[1m[35m$DIR/src/lfortran/ast.h[39m[0m[2m", line 4659, in void LCompilers::LFortran::AST::visit_stmt_t<LCompilers::LFortran::BodyVisitor>(LCompilers::LFortran::AST::stmt_t const&, LCompilers::LFortran::BodyVisitor&)[0m
+    case stmtType::Print: { v.visit_Print((const Print_t &)x); return; }
+[2m  File "[0m[1m[35m$DIR/src/lfortran/semantics/ast_body_visitor.cpp[39m[0m[2m", line 3854, in LCompilers::LFortran::BodyVisitor::visit_Print(LCompilers::LFortran::AST::Print_t const&)[0m
+    this->visit_expr(*x.m_values[i]);
+[2m  File "[0m[1m[35m$DIR/src/lfortran/ast.h[39m[0m[2m", line 5043, in LCompilers::LFortran::AST::BaseVisitor<LCompilers::LFortran::BodyVisitor>::visit_expr(LCompilers::LFortran::AST::expr_t const&)[0m
+    void visit_expr(const expr_t &b) { visit_expr_t(b, self()); }
+[2m  File "[0m[1m[35m$DIR/src/lfortran/ast.h[39m[0m[2m", line 4697, in void LCompilers::LFortran::AST::visit_expr_t<LCompilers::LFortran::BodyVisitor>(LCompilers::LFortran::AST::expr_t const&, LCompilers::LFortran::BodyVisitor&)[0m
+    case exprType::FuncCallOrArray: { v.visit_FuncCallOrArray((const FuncCallOrArray_t &)x); return; }
+[2m  File "[0m[1m[35m$DIR/src/lfortran/semantics/ast_common_visitor.h[39m[0m[2m", line 7659, in LCompilers::LFortran::CommonVisitor<LCompilers::LFortran::BodyVisitor>::visit_FuncCallOrArray(LCompilers::LFortran::AST::FuncCallOrArray_t const&)[0m
+    v = intrinsic_as_node(x, is_function);
+[2m  File "[0m[1m[35m$DIR/src/lfortran/semantics/ast_common_visitor.h[39m[0m[2m", line 7017, in LCompilers::LFortran::CommonVisitor<LCompilers::LFortran::BodyVisitor>::intrinsic_as_node(LCompilers::LFortran::AST::FuncCallOrArray_t const&, bool&)[0m
+    tmp = create_func(al, x.base.base.loc, args, diag);
+[2m  File "[0m[1m[35m$DIR/src/libasr/pass/intrinsic_array_function_registry.h[39m[0m[2m", line 3157, in LCompilers::ASRUtils::Sum::create_Sum(Allocator&, LCompilers::Location const&, LCompilers::Vec<LCompilers::ASR::expr_t*>&, LCompilers::diag::Diagnostics&)[0m
+    return ArrIntrinsic::create_ArrIntrinsic(al, loc, args, diag,
+[2m  File "[0m[1m[35m$DIR/src/libasr/pass/intrinsic_array_function_registry.h[39m[0m[2m", line 706, in LCompilers::ASRUtils::ArrIntrinsic::create_ArrIntrinsic(Allocator&, LCompilers::Location const&, LCompilers::Vec<LCompilers::ASR::expr_t*>&, LCompilers::diag::Diagnostics&, LCompilers::ASRUtils::IntrinsicArrayFunctions)[0m
+    fill_dimensions_for_ArrIntrinsic(al, (int64_t) n_dims - 1,
+[2m  File "[0m[1m[35m$DIR/src/libasr/pass/intrinsic_array_function_registry.h[39m[0m[2m", line 590, in LCompilers::ASRUtils::ArrIntrinsic::fill_dimensions_for_ArrIntrinsic(Allocator&, unsigned long, LCompilers::ASR::expr_t*, LCompilers::ASR::expr_t*, LCompilers::diag::Diagnostics&, bool, LCompilers::Vec<LCompilers::ASR::dimension_t>&)[0m
+    args_merge.push_back(al, b.Lt(b.i32(it+1), dim));
+AssertFailed: check_equal_type(expr_type(left), expr_type(right))
