@@ -1,0 +1,13 @@
+{
+    "basename": "asr-hashmap_nested_dealloc_derived_pointer-f935a29",
+    "cmd": "lfortran --show-asr --no-color {infile} -o {outfile}",
+    "infile": "tests/../integration_tests/hashmap_nested_dealloc_derived_pointer.f90",
+    "infile_hash": "9ceb4968dd7fb56b2a483800a46ea45ce8b98dc22c9a9d46d645fc51",
+    "outfile": null,
+    "outfile_hash": null,
+    "stdout": null,
+    "stdout_hash": null,
+    "stderr": "asr-hashmap_nested_dealloc_derived_pointer-f935a29.stderr",
+    "stderr_hash": "fbb97d1534757574bb7443294be14bfd6d3f17dba7ce140763b0d03a",
+    "returncode": 1
+}

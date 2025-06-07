@@ -4686,3 +4686,11 @@ llvm = true
 [[test]]
 filename = "../integration_tests/volatile_03.f90"
 llvm = true
+
+[[test]]
+filename = "class_abstract_type.f90"
+asr = true
+
+[[test]]
+filename = "../integration_tests/hashmap_nested_dealloc_derived_pointer.f90"
+asr = true
