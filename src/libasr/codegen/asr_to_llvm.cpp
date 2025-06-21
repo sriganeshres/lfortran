@@ -11035,6 +11035,28 @@ public:
                     builder->CreateStore(builder->CreateBitCast(dt_data, target_dt_type),
                                         target_dt_data_ptr);
                     args.push_back(target_dt);
+                    std::string captured_global_name
+                        = "__lcompilers_created__nested_context__" + proc_sym_name + "_self";
+                    llvm::GlobalVariable* nested_global
+                        = module->getNamedGlobal(captured_global_name);
+                    if (nested_global) {
+
+                        llvm::Value* global_hash_ptr = llvm_utils->create_gep(nested_global, 0);
+                        llvm::Value* global_data_ptr = llvm_utils->create_gep(nested_global, 1);
+                        
+                        #if LLVM_VERSION_MAJOR > 16
+                            ptr_type[nested_global] = nested_global->getValueType();
+                            ptr_type[target_dt_hash_ptr] = llvm::Type::getInt64Ty(context);
+                            ptr_type[target_dt_data_ptr] = global_data_ptr->getType();
+                        #endif
+                        // Use the correct types for loading
+                        llvm::Value* local_hash_val = llvm_utils->CreateLoad(target_dt_hash_ptr);
+                        llvm::Value* local_data_val = llvm_utils->CreateLoad(target_dt_data_ptr);
+
+                        // Store the loaded values
+                        builder->CreateStore(local_hash_val, global_hash_ptr);
+                        builder->CreateStore(local_data_val, global_data_ptr);
+                    }
                 }
                 ASR::symbol_t* s_proc = ASRUtils::symbol_get_past_external(class_proc->m_proc);
                 uint32_t h = get_hash((ASR::asr_t*) s_proc);

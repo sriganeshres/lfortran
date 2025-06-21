@@ -4695,3 +4695,7 @@ options = "-c --generate-object-code"
 [[test]]
 filename = "../integration_tests/operator_overloading_12.f90"
 asr = true
+
+[[test]]
+filename = "../integration_tests/call_subroutine_without_type_01.f90"
+llvm = true
