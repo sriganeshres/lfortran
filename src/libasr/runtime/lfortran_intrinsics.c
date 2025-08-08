@@ -5106,12 +5106,11 @@ LFORTRAN_API void _lfortran_string_write(char **str_holder, bool is_allocatable,
 }
 
 LFORTRAN_API void _lfortran_string_read_i32(char *str, int64_t len, char *format, int32_t *i) {
-    char *buf = (char*)malloc(len + 1);
-    if (!buf) return;
-    memcpy(buf, str, len);
-    buf[len] = '\0';
-    sscanf(buf, format, i);
-    free(buf);
+    char* tmp = (char*)malloc(len + 1);
+    strncpy(tmp, str, len);
+    tmp[len] = '\0';
+    sscanf(tmp, format, i);
+    free(tmp);
 }
 
 
