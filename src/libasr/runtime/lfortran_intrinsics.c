@@ -5115,30 +5115,27 @@ LFORTRAN_API void _lfortran_string_read_i32(char *str, int64_t len, char *format
 
 
 LFORTRAN_API void _lfortran_string_read_i64(char *str, int64_t len, char *format, int64_t *i) {
-    char *buf = (char*)malloc(len + 1);
-    if (!buf) return; // allocation failure
-    memcpy(buf, str, len);
-    buf[len] = '\0';
-    sscanf(buf, format, i);
-    free(buf);
+    char* tmp = (char*)malloc(len + 1);
+    strncpy(tmp, str, len);
+    tmp[len] = '\0';
+    sscanf(tmp, format, i);
+    free(tmp);
 }
 
 LFORTRAN_API void _lfortran_string_read_f32(char *str, int64_t len, char *format, float *f) {
-    char *buf = (char*)malloc(len + 1);
-    if (!buf) return;
-    memcpy(buf, str, len);
-    buf[len] = '\0';
-    sscanf(buf, format, f);
-    free(buf);
+    char* tmp = (char*)malloc(len + 1);
+    strncpy(tmp, str, len);
+    tmp[len] = '\0';
+    sscanf(tmp, format, f);
+    free(tmp);
 }
 
 LFORTRAN_API void _lfortran_string_read_f64(char *str, int64_t len, char *format, double *f) {
-    char *buf = (char*)malloc(len + 1);
-    if (!buf) return;
-    memcpy(buf, str, len);
-    buf[len] = '\0';
-    sscanf(buf, format, f);
-    free(buf);
+    char* tmp = (char*)malloc(len + 1);
+    strncpy(tmp, str, len);
+    tmp[len] = '\0';
+    sscanf(tmp, format, f);
+    free(tmp);
 }
 
 char *remove_whitespace(char *str) {
