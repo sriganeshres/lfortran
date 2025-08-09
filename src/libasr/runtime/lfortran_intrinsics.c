@@ -5237,18 +5237,32 @@ LFORTRAN_API void _lfortran_close(int32_t unit_num, char* status, int64_t status
         exit(1);
     }
     // TODO: Support other `status` specifiers
-    char * file_name = get_file_name_from_unit(unit_num, &unit_file_bin);
-    char* scratch_file = "_lfortran_generated_file";
-    bool is_temp_file = strncmp(file_name, scratch_file, strlen(scratch_file)) == 0;
-    if ((status && strcmp(status, "delete") == 0) || is_temp_file) {
+    char* file_name = get_file_name_from_unit(unit_num, &unit_file_bin);
+    const char* scratch_file = "_lfortran_generated_file";
+    const int64_t scratch_file_len = sizeof("_lfortran_generated_file") - 1;  // exclude '\0'
+    bool is_temp_file = (strncmp(file_name, scratch_file, scratch_file_len) == 0);
+    bool delete_requested = false;
+    if (status && status_len > 0) {
+        // Compare to "delete" without assuming null-termination
+        const char delete_str[] = "delete";
+        const int64_t delete_len = sizeof(delete_str) - 1;
+
+        if (status_len == delete_len && strncmp(status, delete_str, delete_len) == 0) {
+            delete_requested = true;
+        }
+    }
+    if (delete_requested || is_temp_file) {
         if (remove(file_name) != 0) {
             printf("Error in deleting file!\n");
             exit(1);
         }
     }
-    if (is_temp_file) free(file_name);
+    if (is_temp_file) {
+        free(file_name);
+    }
     remove_from_unit_to_file(unit_num);
 }
+
 
 LFORTRAN_API int32_t _lfortran_ichar(char *c) {
      return (int32_t) c[0];
