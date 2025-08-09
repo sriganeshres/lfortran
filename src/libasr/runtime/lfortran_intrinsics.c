@@ -5142,20 +5142,32 @@ LFORTRAN_API void _lfortran_string_read_f64(char *str, int64_t len, char *format
     free(buf);
 }
 
-char *remove_whitespace(char *str) {
-    if (str == NULL || str[0] == '\0') {
-        return "(null)";
+char *remove_whitespace(char *str, int64_t *len) {
+    if (!str || *len <= 0) return str;
+
+    char *start = str;
+    char *end = str + (*len - 1);
+
+    // Trim leading spaces
+    while (*len > 0 && isspace((unsigned char)*start)) {
+        start++;
+        (*len)--;
     }
-    char *end;
-    // remove leading space
-    while(isspace((unsigned char)*str)) str++;
-    if(*str == 0) // All spaces?
-        return str;
-    // remove trailing space
-    end = str + strlen(str) - 1;
-    while(end > str && isspace((unsigned char)*end)) end--;
-    // Write new null terminator character
-    end[1] = '\0';
+
+    // Trim trailing spaces
+    while (*len > 0 && isspace((unsigned char)*end)) {
+        end--;
+        (*len)--;
+    }
+
+    // Shift if we trimmed from the front
+    if (start != str && *len > 0) {
+        memmove(str, start, *len);
+    }
+
+    // Null terminate for now, but length is already known
+    str[*len] = '\0';
+
     return str;
 }
 
@@ -5166,9 +5178,15 @@ LFORTRAN_API void _lfortran_string_read_str(char *src_data, int64_t src_len, cha
 }
 
 LFORTRAN_API void _lfortran_string_read_bool(char *str, int64_t len, char *format, int32_t *i) {
-    sscanf(str, format, i);
-    printf("%s\n", str);
+    char *buf = (char*)malloc(len + 1);
+    if (!buf) return; // allocation failure
+    memcpy(buf, str, len);
+    buf[len] = '\0';
+    sscanf(buf, format, i);
+    printf("%s\n", buf); // preserve the debug print
+    free(buf);
 }
+
 
 void lfortran_error(const char *message) {
     fprintf(stderr, "LFORTRAN ERROR: %s\n", message);
@@ -5555,7 +5573,7 @@ void get_local_info_dwarfdump(struct Stacktrace *d) {
     }
 }
 
-char *read_line_from_file(char *filename, uint32_t line_number) {
+char *read_line_from_file(char *filename, uint32_t line_number, size_t *out_len) {
     FILE *fp;
     char *line = NULL;
     size_t len = 0, n = 0;
@@ -5565,6 +5583,7 @@ char *read_line_from_file(char *filename, uint32_t line_number) {
     while (n < line_number && (getline(&line, &len, fp) != -1)) n++;
     fclose(fp);
 
+    if (out_len) *out_len = len;
     return line;
 }
 
@@ -5599,6 +5618,9 @@ LFORTRAN_API void print_stacktrace_addresses(char *filename, bool use_colors) {
     for (int32_t i = d.local_pc_size-2; i >= 0; i--) {
 #endif
         uint64_t index = bisection(d.addresses, d.stack_size, d.local_pc[i]);
+        int64_t line_len;
+        char* line = read_line_from_file(source_filename, d.line_numbers[index], &line_len);
+        char* trimmed = remove_whitespace(line, &line_len);  // updated to be len-aware
         if(use_colors) {
             fprintf(stderr, DIM "  File " S_RESET
                 BOLD MAGENTA "\"%s\"" C_RESET S_RESET
@@ -5607,20 +5629,19 @@ LFORTRAN_API void print_stacktrace_addresses(char *filename, bool use_colors) {
 #else
                 DIM ", line %" PRIu64 "\n" S_RESET
 #endif
-                "    %s\n", source_filename, d.line_numbers[index],
-                remove_whitespace(read_line_from_file(source_filename,
-                d.line_numbers[index])));
+                "    %.*s\n", source_filename, d.line_numbers[index],
+                (int)line_len, trimmed);
         } else {
             fprintf(stderr, "  File \"%s\", "
 #ifdef HAVE_LFORTRAN_MACHO
-                "line %lld\n    %s\n",
+                "line %lld\n    %.*s\n",
 #else
-                "line %" PRIu64 "\n    %s\n",
+                "line %" PRIu64 "\n    %.*s\n",
 #endif
                 source_filename, d.line_numbers[index],
-                remove_whitespace(read_line_from_file(source_filename,
-                d.line_numbers[index])));
+                (int)line_len, trimmed);
         }
+        free(line);
 #ifdef HAVE_LFORTRAN_MACHO
     }
 #else
